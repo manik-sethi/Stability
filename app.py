@@ -132,8 +132,10 @@ def create_transaction():
 
     # Extract form data
     category = request.form.get('category')
+    # Check if the selected category is 'other', and then fetch the custom category
     if category == 'other':
-        category = request.form.get('otherCategory')
+        category = request.form.get('otherCategoryInput')
+    
     amount = float(request.form.get('amount', 0))
     date = request.form.get('date')
 
