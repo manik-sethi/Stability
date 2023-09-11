@@ -51,18 +51,21 @@
 
     <div class="section no-border centered-section">
         <h2>Select a Date:</h2>
+        <form action = "/create_deposit" method = "POST">
         <!-- Input for date selection -->
         <input type="date" id="datePicker">
         <!-- Button to trigger date display -->
         <button class="blue-button" class="blue-button"class="blue-button" onclick="displayDate()">Submit</button>
         <!-- Paragraph to display the selected date -->
         <p id="selectedDate"></p>
+        </form>
+
     </div>
 
     <div class="section">
         <h2>Enter Deposit:</h2>
 
-        <form action="/deposits_and_transactions" method="POST">
+        <form action="/create_deposit" method="POST">
             <div class="form-group">
             <label for="name">Deposit:</label>
             <input type="text" class="form-control" id="deposit" placeholder="Enter deposit" name="deposit">
@@ -120,4 +123,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
