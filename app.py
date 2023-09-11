@@ -18,10 +18,10 @@ class Deposit(db.Model):
 class Transaction(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    description = db.Column(db.String(100), nullable=False)
     category = db.Column(db.String(100), nullable=False)
     amount = db.Column(db.Float, nullable=False)
     date = db.Column(db.String(100), nullable=False)
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -121,43 +121,59 @@ def logout():
 
 @app.route('/create_transaction', methods=['POST'])
 def create_transaction():
-    if 'email' in session:
-        user = User.query.filter_by(email=session['email']).first()
+    # Check for an authenticated user
+    if 'email' not in session:
+        return redirect('/login')
+    
+    user = User.query.filter_by(email=session['email']).first()
+    if not user:
+        print("User not found!")
+        return redirect('/login')
 
-        # Handle creating a new transaction based on user input
-        description = request.form['description']
-        category = request.form['category']
-        amount = request.form['amount']
-        date = datetime.now()  # You can use the current date/time
+    # Extract form data
+    category = request.form.get('category')
+    if category == 'other':
+        category = request.form.get('otherCategory')
+    amount = float(request.form.get('amount', 0))
+    date = request.form.get('date')
 
-        new_transaction = Transaction(user_id=user.id, description=description, category=category, amount=amount, date=date)
+    # Handle creating a new transaction based on user input
+    try:
+        new_transaction = Transaction(user_id=user.id, category=category, amount=amount, date=date)
         db.session.add(new_transaction)
         db.session.commit()
+        return redirect('/deposits_and_transactions')
+    except Exception as e:
+        print(f"Error storing transaction: {e}")
+        db.session.rollback()  # Rollback the transaction in case of an error
+        return redirect('/deposits_and_transactions')
 
-        return redirect('/dashboard')
-
-    return redirect('/login')
 
 @app.route('/create_deposit', methods=['POST'])
 def create_deposit():
-    if 'email' in session:
-        user = User.query.filter_by(email=session['email']).first()
+    # Check for an authenticated user
+    if 'email' not in session:
+        return redirect('/login')
+    
+    user = User.query.filter_by(email=session['email']).first()
+    if not user:
+        print("User not found!")
+        return redirect('/login')
 
-        # Handle creating a new deposit based on user input
-        amount = request.form['deposit']  # Update to 'deposit' field
-        date = datetime.now()
+    # Extract form data
+    amount = request.form.get('deposit', None)
+    date = request.form.get('date', None)
 
-        try:
-            new_deposit = Deposit(user_id=user.id, amount=amount, date=date)
-            db.session.add(new_deposit)
-            db.session.commit()
-            return redirect('/dashboard')
-        except Exception as e:
-            print(f"Error storing deposit: {e}")
-            db.session.rollback()  # Rollback the transaction in case of an error
-
-    return redirect('/login')
-
+    # Handle creating a new deposit based on user input
+    try:
+        new_deposit = Deposit(user_id=user.id, amount=amount, date=date)
+        db.session.add(new_deposit)
+        db.session.commit()
+        return redirect('/deposits_and_transactions')
+    except Exception as e:
+        print(f"Error storing deposit: {e}")
+        db.session.rollback()  # Rollback the transaction in case of an error
+        return redirect('/deposits_and_transactions')
 
 if __name__ == '__main__':
     app.run(debug=True)
