@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budgeting</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="tab">
+        <img src="stability" alt="Stability Logo" id="topRightImage" style="max-height: 25px;">
+        <a href="overview" class="tablinks">Overview</a>
+        <a href="deposits_and_transactions" class="tablinks active">Deposits and Transactions</a>
+        <a href="budgeting" class="tablinks">Budgeting</a>
+    </div>
+
+    <h3>Budgeting</h3>
+    <p>Content related to budgeting.</p>
+
+    <label for="budgetChoices">Select a budget category:</label>
+    <select id="budgetChoices" onchange="checkOther(this)">
+        <option value="groceries">Groceries</option>
+        <option value="utilities">Utilities</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="other">Other</option>
+    </select>
+    
+    <div id="otherInput" style="display:none;">
+        <label for="otherCategory">Specify the category:</label>
+        <input type="text" id="otherCategory">
+        <button onclick="addNewCategory()">Add</button>
+    </div>
+    
+    <!-- Budget bars for categories -->
+    <div class="category-container" id="budgetCategoryContainer">
+        <!-- Categories will be dynamically added here -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

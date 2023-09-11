@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    
+    <style>
+        /* Your existing styles */
+        body {
+            font-family: 'Roboto', sans-serif; /* Set the font to Roboto */
+            margin: 0;
+            padding: 0;
+        }
+        .tablinks {
+            font-size: 16px; /* Adjust the font size as needed */
+        }
+        /* Rest of your existing styles */
+    </style>
+</head>
+<body>
+
+    <div class="tab">
+        <img src="{{ url_for('static', filename='stability.jpg') }}" alt="Stability Image" id="topRightImage" style="max-height: 25px;">
+        <a href="overview" class="tablinks">Overview</a>
+        <a href="deposits_and_transactions" class="tablinks">Deposits and Transactions</a>
+        <a href="budgeting" class="tablinks active">Budgeting</a>
+    </div>
+
+    <h3>Budgeting</h3>
+    <p>Content related to budgeting.</p>
+
+    <label for="budgetChoices">Select a budget category:</label>
+    <select id="budgetChoices" onchange="checkOther(this)">
+        <option value="groceries">Groceries</option>
+        <option value="utilities">Utilities</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="other">Other</option>
+    </select>
+    
+    <div id="otherInput" style="display:none;">
+        <label for="otherCategory">Specify the category:</label>
+        <input type="text" id="otherCategory">
+        <button class="blue-button" onclick="addNewCategory()">Add</button>
+    </div>
+    
+    <div class="category-container" id="budgetCategoryContainer">
+        <!-- Existing categories -->
+        <div class="category">
+            <p>Groceries:</p>
+            <div class="budget-bar">
+                <div class="filled-bar groceries"></div>
+            </div>
+            <div class="budget-input-container">
+                <input type="number" placeholder="Set budget" class="budget-input" id="groceriesBudget">
+                <button class="blue-button" class="set-budget-button" onclick="updateBudgetBar('groceries')">Set</button>
+            </div>
+            <span class="budget-amount" id="groceriesBudgetAmount">Budget: N/A</span>
+        </div>
+        <div class="category">
+            <p>Utilities:</p>
+            <div class="budget-bar">
+                <div class="filled-bar utilities"></div>
+            </div>
+            <div class="budget-input-container">
+                <input type="number" placeholder="Set budget" class="budget-input" id="utilitiesBudget">
+                <button class="blue-button" class="set-budget-button" onclick="updateBudgetBar('utilities')">Set</button>
+            </div>
+            <span class="budget-amount" id="utilitiesBudgetAmount">Budget: N/A</span>
+        </div>
+        <div class="category">
+            <p>Entertainment:</p>
+            <div class="budget-bar">
+                <div class="filled-bar entertainment"></div>
+            </div>
+            <div class="budget-input-container">
+                <input type="number" placeholder="Set budget" class="budget-input" id="entertainmentBudget">
+                <button class="blue-button"class="set-budget-button" onclick="updateBudgetBar('entertainment')">Set</button>
+            </div>
+            <span class="budget-amount" id="entertainmentBudgetAmount">Budget: N/A</span>
+        </div>
+        <!-- More categories can be added here using the same structure -->
+    </div>
+
+    <div class="category" id="newCategoryTemplate" style="display: none;">
+        <p id="newCategoryLabel"></p>
+        <div class="budget-bar">
+            <div class="filled-bar new-category"></div>
+        </div>
+        <div class="budget-input-container">
+            <input type="number" placeholder="Set budget" class="budget-input new-category" onchange="updateBudgetBar('new-category')">
+            <button class="blue-button"class="set-budget-button" onclick="setNewCategoryBudget()">Set</button>
+        </div>
+        <span class="budget-amount new-category" id="newCategoryBudgetAmount">Budget: N/A</span>
+    </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
