@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, session, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 from datetime import datetime
+from collections import defaultdict
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
@@ -49,9 +50,36 @@ def index():
 def stability():
     return render_template('stability.html')
 
+
 @app.route('/overview')
 def overview():
-    return render_template('overview.html')
+    if 'email' in session:
+        user = User.query.filter_by(email=session['email']).first()
+
+        # Fetch deposits and transactions from the database
+        deposits = Deposit.query.filter_by(user_id=user.id).all()
+        transactions = Transaction.query.filter_by(user_id=user.id).all()
+
+        # Create a defaultdict to store monthly net worth
+        net_worth_by_month = defaultdict(float)
+
+        # Calculate net worth for each month
+        for deposit in deposits:
+            month = deposit.date.split('-')[1]  # Assuming date format is 'YYYY-MM-DD'
+            net_worth_by_month[month] += deposit.amount
+
+        for transaction in transactions:
+            month = transaction.date.split('-')[1]  # Assuming date format is 'YYYY-MM-DD'
+            net_worth_by_month[month] -= transaction.amount
+
+        # Convert defaultdict to lists for Chart.js
+        months = list(net_worth_by_month.keys())
+        net_worth = [net_worth_by_month[month] for month in months]
+
+        return render_template('overview.html', user=user, months=months, net_worth=net_worth)
+
+    return redirect('/login')
+
 
 @app.route('/deposits_and_transactions')
 def deposits_and_transactions():
