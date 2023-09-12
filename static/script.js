@@ -63,7 +63,7 @@ function storeDeposit() {
         document.getElementById('datePicker').value = '';
         document.getElementById('deposit').value = '';
     } else {
-        alert('Please enter both date and deposit amount!');
+        alert('Please enter both date, and deposit amount!');
     }
 }
 
