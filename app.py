@@ -88,7 +88,7 @@ def overview():
         months = sorted(net_worth_by_month.keys())  # Sort the months
         net_worth = [net_worth_by_month[month] for month in months]
 
-        return render_template('overview.html', user=user, months=months, net_worth=net_worth)
+        return render_template('overview.html', user=user, months=months, net_worth=net_worth, active_overview=True)
 
     return redirect('/login')
 

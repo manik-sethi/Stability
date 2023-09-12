@@ -33,14 +33,20 @@
         .content {
             text-align: center;
         }
+
+        /* Define the active tab style */
+        .active {
+            background-color: #007bff;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
 
     <div class="tab">
         <img src="{{ url_for('static', filename='stability.jpg') }}" alt="Stability Image" id="topRightImage" style="max-height: 25px;">
-        <a href="overview" class="tablinks">Overview</a>
-        <a href="deposits_and_transactions" class="tablinks active">Deposits and Transactions</a>
+        <a href="overview" class="tablinks active">Overview</a>
+        <a href="deposits_and_transactions" class="tablinks">Deposits and Transactions</a>
         <a href="budgeting" class="tablinks">Budgeting</a>
     </div>
 
@@ -54,52 +60,71 @@
     </div>
 
     <script>
-    // Data for the line chart
-    const months = JSON.parse('{{ months | tojson | safe }}');
-    const netWorth = JSON.parse('{{ net_worth | tojson | safe }}');
+        // JavaScript to handle tab click event and toggle the 'active' class
 
-    // Function to convert month numbers to month names
-    function getMonthName(monthNumber) {
-        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-        return monthNames[monthNumber - 1];
-    }
+        // Get all tab links
+        const tabLinks = document.querySelectorAll('.tablinks');
 
-    // Convert month numbers to month names for the x-axis labels
-    const monthLabels = months.map(date => getMonthName(parseInt(date.split('-')[1])));
+        // Function to handle tab click
+        function handleTabClick(event) {
+            // Remove 'active' class from all tab links
+            tabLinks.forEach(link => link.classList.remove('active'));
 
-    // Create a line chart using Chart.js
-    const lineChart = new Chart(document.getElementById('lineChart'), {
-        type: 'line',
-        data: {
-            labels: monthLabels,  // Use monthLabels for the x-axis
-            datasets: [{
-                label: 'Net Worth',
-                data: netWorth,
-                borderColor: 'blue',
-                backgroundColor: 'rgba(0, 0, 255, 0.2)',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    title: {
-                        display: true,
-                        text: 'Net Worth'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Month'
+            // Add 'active' class to the clicked tab
+            event.currentTarget.classList.add('active');
+        }
+
+        // Add click event listener to each tab link
+        tabLinks.forEach(link => {
+            link.addEventListener('click', handleTabClick);
+        });
+
+        // Data for the line chart
+        const months = JSON.parse('{{ months | tojson | safe }}');
+        const netWorth = JSON.parse('{{ net_worth | tojson | safe }}');
+
+        // Function to convert month numbers to month names
+        function getMonthName(monthNumber) {
+            const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            return monthNames[monthNumber - 1];
+        }
+
+        // Convert month numbers to month names for the x-axis labels
+        const monthLabels = months.map(date => getMonthName(parseInt(date.split('-')[1])));
+
+        // Create a line chart using Chart.js
+        const lineChart = new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: {
+                labels: monthLabels,  // Use monthLabels for the x-axis
+                datasets: [{
+                    label: 'Net Worth',
+                    data: netWorth,
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        title: {
+                            display: true,
+                            text: 'Net Worth'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Month'
+                        }
                     }
                 }
             }
-        }
-    });
+        });
     </script>
 
 </body>
