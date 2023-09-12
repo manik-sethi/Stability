@@ -51,6 +51,7 @@ def stability():
     return render_template('stability.html')
 
 
+
 @app.route('/overview')
 def overview():
     if 'email' in session:
@@ -63,22 +64,36 @@ def overview():
         # Create a defaultdict to store monthly net worth
         net_worth_by_month = defaultdict(float)
 
-        # Calculate net worth for each month
+        # Initialize a running total for net savings for each month
+        running_total_by_month = defaultdict(float)
+
+        # Calculate net worth for each month and accumulate net savings
         for deposit in deposits:
-            month = deposit.date.split('-')[1]  # Assuming date format is 'YYYY-MM-DD'
-            net_worth_by_month[month] += deposit.amount
+            deposit_date = datetime.strptime(deposit.date, '%Y-%m-%d')  # Adjust date format
+            month = deposit_date.strftime('%Y-%m')  # Extract year and month
+            running_total_by_month[month] += deposit.amount
 
         for transaction in transactions:
-            month = transaction.date.split('-')[1]  # Assuming date format is 'YYYY-MM-DD'
-            net_worth_by_month[month] -= transaction.amount
+            transaction_date = datetime.strptime(transaction.date, '%Y-%m-%d')  # Adjust date format
+            month = transaction_date.strftime('%Y-%m')  # Extract year and month
+            running_total_by_month[month] -= transaction.amount
+
+        # Calculate the cumulative net worth based on the running total
+        cumulative_net_worth = 0.0
+        for month in sorted(running_total_by_month.keys()):
+            cumulative_net_worth += running_total_by_month[month]
+            net_worth_by_month[month] = cumulative_net_worth
 
         # Convert defaultdict to lists for Chart.js
-        months = list(net_worth_by_month.keys())
+        months = sorted(net_worth_by_month.keys())  # Sort the months
         net_worth = [net_worth_by_month[month] for month in months]
 
         return render_template('overview.html', user=user, months=months, net_worth=net_worth)
 
     return redirect('/login')
+
+
+
 
 
 @app.route('/deposits_and_transactions')
@@ -160,8 +175,10 @@ def create_transaction():
 
     # Extract form data
     category = request.form.get('category')
+    # Check if the selected category is 'other', and then fetch the custom category
     if category == 'other':
-        category = request.form.get('otherCategory')
+        category = request.form.get('otherCategoryInput')
+    
     amount = float(request.form.get('amount', 0))
     date = request.form.get('date')
 

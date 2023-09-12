@@ -44,54 +44,63 @@
         <a href="budgeting" class="tablinks">Budgeting</a>
     </div>
 
-<div class="content">
-    <h3>Overview</h3>
-    <p>Track your personal finances!</p>
-</div>
+    <div class="content">
+        <h3>Overview</h3>
+        <p>Track your personal finances!</p>
+    </div>
 
-<div class="line-chart-container">
-    <canvas id="lineChart"></canvas>
-</div>
+    <div class="line-chart-container">
+        <canvas id="lineChart"></canvas>
+    </div>
 
-<script>
-// Sample data for the line chart
-const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const amounts = [500, 800, 600, 1000, 1200, 900, 1100, 1200, 1000, 800, 500, 530];
+    <script>
+    // Data for the line chart
+    const months = JSON.parse('{{ months | tojson | safe }}');
+    const netWorth = JSON.parse('{{ net_worth | tojson | safe }}');
 
-// Create a line chart using Chart.js
-const lineChart = new Chart(document.getElementById('lineChart'), {
-    type: 'line',
-    data: {
-        labels: months,
-        datasets: [{
-            label: 'Amount of Money',
-            data: amounts,
-            borderColor: 'blue',
-            backgroundColor: 'rgba(0, 0, 255, 0.2)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true,
-                title: {
-                    display: true,
-                    text: 'Amount'
-                }
-            },
-            x: {
-                title: {
-                    display: true,
-                    text: 'Months'
+    // Function to convert month numbers to month names
+    function getMonthName(monthNumber) {
+        const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        return monthNames[monthNumber - 1];
+    }
+
+    // Convert month numbers to month names for the x-axis labels
+    const monthLabels = months.map(date => getMonthName(parseInt(date.split('-')[1])));
+
+    // Create a line chart using Chart.js
+    const lineChart = new Chart(document.getElementById('lineChart'), {
+        type: 'line',
+        data: {
+            labels: monthLabels,  // Use monthLabels for the x-axis
+            datasets: [{
+                label: 'Net Worth',
+                data: netWorth,
+                borderColor: 'blue',
+                backgroundColor: 'rgba(0, 0, 255, 0.2)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: false,
+                    title: {
+                        display: true,
+                        text: 'Net Worth'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Month'
+                    }
                 }
             }
         }
-    }
-});
-</script>
+    });
+    </script>
 
 </body>
 </html>
