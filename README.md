@@ -11,9 +11,10 @@ Stability is a web application built to serve all of your budgeting needs. It he
 
 List the key features of your project. For example:
 
-- Feature 1: Describe what it does.
-- Feature 2: Describe what it does.
-- ...
+- Feature 1: Able to save username and password securely
+- Feature 2: Logs transactions and deposits and remembers then when you login
+- Feature 3: Uses user-inputed data to visualize data for better user experience
+- Feature 4: Allows you to create budgets and accurately tracks how close you are to the limit
 
 ## Installation
 
