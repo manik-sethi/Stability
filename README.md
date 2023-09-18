@@ -7,6 +7,10 @@ Stability is a web application built to serve all of your budgeting needs. It he
 
 [Watch the Tutorial](https://www.youtube.com/watch?v=fjYpHiOQgRk)
 
+## Project Overview
+
+First started off using react and javascript for our backend. Later on we migrated to using flask and python instead. Our database uses SQL and the frontend uses HTML.
+
 ## Features
 
 List the key features of your project. For example:
