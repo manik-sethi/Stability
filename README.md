@@ -1,24 +1,11 @@
 # Stability Web App
 
-A brief description of your project.
+Stability is a web application built to serve all of your budgeting needs. It helps you plan a budget for a month, track your transactions and deposits, and gives you a graph overview of where you are at with your budget each month.
 
-## Table of Contents
-
-- [Project Overview](#project-overview)
-- [Demo](#demo)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-
-## Project Overview
-
-Explain in a few sentences what your project does, its main purpose, and why it's valuable.
 
 ## Demo
 
-Include a link to a live demo or a screenshot/gif of your project in action.
+[Watch the Tutorial](https://www.youtube.com/watch?v=fjYpHiOQgRk)
 
 ## Features
 
