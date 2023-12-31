@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <style>
+        /* Import Roboto font styles */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+        /* Apply Roboto font to body */
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            font-size: 15px;
+        }
+
+        /* Font size for tabs */
+        .tablinks {
+            font-size: 16px;
+        }
+
+        .line-chart-container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Center-align text in the .content class */
+        .content {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="tab">
+    <img src="stability" alt="Stability Logo" id="topRightImage" style="max-height: 25px;">
+    <a href="overview" class="tablinks active">Overview</a>
+    <a href="deposits_and_transactions" class="tablinks">Deposits and Transactions</a>
+    <a href="budgeting" class="tablinks">Budgeting</a>
+</div>
+
+<div class="content">
+    <h3>Overview</h3>
+    <p>Track your personal finances!</p>
+</div>
+
+<div class="line-chart-container">
+    <canvas id="lineChart"></canvas>
+</div>
+
+<script>
+// Sample data for the line chart
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const amounts = [500, 800, 600, 1000, 1200, 900, 1100, 1200, 1000, 800, 500, 530];
+
+// Create a line chart using Chart.js
+const lineChart = new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: months,
+        datasets: [{
+            label: 'Amount of Money',
+            data: amounts,
+            borderColor: 'blue',
+            backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Amount'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Months'
+                }
+            }
+        }
+    }
+});
+</script>
+</body>
+
+<div class="container">
+    <div class=" row justify-content-center">
+        <div class="col-sm-8">
+            <h2>Home page</h2>
+            <a href="/register" class="btn btn-primary mt-3">Register</a>
+            <a href="/login" class="btn btn-dark mt-3">Login</a>
+        </div>
+
+    </div>
+  
+</div>
+
+</body>
+</html>
